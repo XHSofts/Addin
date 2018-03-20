@@ -1,6 +1,6 @@
 ﻿Module ModMain
     Public FinalBuildDate As String = "20171214"
-    Public FinalBuildVersion As Integer = 22
+    Public FinalBuildVersion As Integer = 23
     Public TodayBuildVersion As Integer = 2
     Public CurrErrCode As Integer
     Const TitleColor As ConsoleColor = ConsoleColor.Gray
