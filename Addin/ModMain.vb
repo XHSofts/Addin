@@ -173,6 +173,7 @@
                 Output("", 0， InfoColor)
                 Output("本程序旨在利用 VB.Net 的特性，完善 Console 命令行的功能，", 1， InfoColor1)
                 Output("提供原先完全无法想像的功能。", 1， InfoColor1)
+                Output("Under GNU GPLv3", 1， InfoColor2)
                 Output("", 0， InfoColor)
                 Output("本程序的几点注意:", 0， InfoColor)
                 Output("1.所有命令及开关均不用注意大小写，会自动转换。", 1， InfoColor1)
@@ -180,7 +181,8 @@
                 Output("3.部分开关都有位置限制，详情请参见各模块帮助。", 1， InfoColor1)
                 Output("4.本程序为了兼容低版本系统，故使用.Net Framework 4.0。如果你能看到这条消息，起码你已经装上了.Net framework 4.0。", 1， InfoColor1)
                 Output("5.你可以随意传播本程序，但请不要反编译，或用各种工具修改作者，谢谢合作。", 1， InfoColor1)
-                Output("要说的就这么多，如果有任何 BUG 欢迎联系 @hemiao98765432 (贴吧)；xiaohe321@outlook.com (邮箱)；919897176 (QQ)，并注明提交 BUG，不要骚扰哦。", 1， InfoColor1)
+                Output("要说的就这么多，如果有任何 BUG 欢迎联系 @xh321 (Github)；xiaohe321@outlook.com (邮箱)；919897176 (QQ)，并注明提交 BUG，不要骚扰哦。", 1， InfoColor1)
+                Output("Github 地址：https://github.com/XHSofts/Addin/", 1， InfoColor2)
                 CurrErrCode = 0
             Case "MATH"
                 Output("Addin 命令行程序下属 Math 模块:", 0， TitleColor)
