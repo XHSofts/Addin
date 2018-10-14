@@ -1,8 +1,8 @@
 ﻿Module ModMain
     '===编译信息==='
     Public Const FinalBuildDate As String = "20181014"
-    Public Const FinalBuildVersion As Integer = 24
-    Public Const TodayBuildVersion As Integer = 1
+    Public Const FinalBuildVersion As Integer = 26
+    Public Const TodayBuildVersion As Integer = 3
     '===变量定义==='
     Public CurrErrCode As Integer
 
@@ -219,16 +219,23 @@
                 Output("HSin                                        R", 1， TableColor)
                 Output("HCos                                        R", 1， TableColor)
                 Output("HTan                                        R", 1， TableColor)
-                Output("HCot                                        R", 1， TableColor)
+                Output("HCot                                 {x|x≠0}", 1， TableColor)
                 Output("HSec                                        R", 1， TableColor)
-                Output("HCsc                                        R", 1， TableColor)
-                Output("ArcSin                                 [-1,1]", 1， TableColor)
-                Output("ArcCos                                 [-1,1]", 1， TableColor)
+                Output("HCsc                                 {x|x≠0}", 1， TableColor)
+                Output("ArcSin                                [-1，1]", 1， TableColor)
+                Output("ArcCos                                [-1，1]", 1， TableColor)
                 Output("ArcTan                                      R", 1， TableColor)
                 Output("ArcCot                                      R", 1， TableColor)
-                Output("ArcSec                      （-∞,-1]U[1,+∞)", 1， TableColor)
-                Output("ArcCsc                      （-∞,-1]U[1,+∞)", 1， TableColor)
-                Output("Log类                                （0,+∞)", 1， TableColor)
+                Output("ArcSec                   （-∞，-1]U[1，+∞）", 1， TableColor)
+                Output("ArcCsc                   （-∞，-1]U[1，+∞）", 1， TableColor)
+                Output("HArcSin                                     R", 1， TableColor)
+                Output("HArcCos                             [1，+∞）", 1， TableColor)
+                Output("HArcTan                             （-1，1）", 1， TableColor)
+                Output("HArcCot                （-∞，-1）U（1，+∞）", 1， TableColor)
+                Output("HArcSec                               （0，1]", 1， TableColor)
+                Output("HArcCsc                              {x|x≠0}", 1， TableColor)
+                Output("Log类                              （0，+∞）", 1， TableColor)
+
                 Output("", 0， InfoColor)
                 Output("详细命令如下:", 0， InfoColor)
                 Output("/rnd [/int] [下限 上限] [种子] :随机数", 1， InfoColor1)
@@ -243,12 +250,24 @@
                 Output("/cot [/deg] 角度 : 三角函数余切", 1， InfoColor1)
                 Output("/sec [/deg] 角度 : 三角函数正割", 1， InfoColor1)
                 Output("/csc [/deg] 角度 : 三角函数余割", 1， InfoColor1)
+                Output("/hsin [/deg] 角度 : 三角函数双曲正弦", 1， InfoColor1)
+                Output("/hcos [/deg] 角度 : 三角函数双曲余弦", 1， InfoColor1)
+                Output("/htan [/deg] 角度 : 三角函数双曲正切", 1， InfoColor1)
+                Output("/hcot [/deg] 角度 : 三角函数双曲余切", 1， InfoColor1)
+                Output("/hsec [/deg] 角度 : 三角函数双曲正割", 1， InfoColor1)
+                Output("/hcsc [/deg] 角度 : 三角函数双曲余割", 1， InfoColor1)
                 Output("/arcsin [/deg] 角度 : 三角函数反正弦", 1， InfoColor1)
                 Output("/arccos [/deg] 角度 : 三角函数反余弦", 1， InfoColor1)
                 Output("/arctan [/deg] 角度 : 三角函数反正切", 1， InfoColor1)
                 Output("/arccot [/deg] 角度 : 三角函数反余切", 1， InfoColor1)
                 Output("/arcsec [/deg] 角度 : 三角函数反正割", 1， InfoColor1)
                 Output("/arccsc [/deg] 角度 : 三角函数反余割", 1， InfoColor1)
+                Output("/harcsin [/deg] 角度 : 三角函数反双曲正弦", 1， InfoColor1)
+                Output("/harccos [/deg] 角度 : 三角函数反双曲余弦", 1， InfoColor1)
+                Output("/harctan [/deg] 角度 : 三角函数反双曲正切", 1， InfoColor1)
+                Output("/harccot [/deg] 角度 : 三角函数反双曲余切", 1， InfoColor1)
+                Output("/harcsec [/deg] 角度 : 三角函数反双曲正割", 1， InfoColor1)
+                Output("/harccsc [/deg] 角度 : 三角函数反双曲余割", 1， InfoColor1)
                 Output("/lg  数字 : 以10为底的对数", 1， InfoColor1)
                 Output("/ln  数字 : 以e为底的对数", 1， InfoColor1)
                 Output("/log 底数 真数 : 对数", 1， InfoColor1)

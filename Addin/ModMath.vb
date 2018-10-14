@@ -98,6 +98,8 @@ Module ModMath
                     CurrErrCode = 0
 
                 End If
+
+            '===三角函数==='
             Case "/sin"
                 If CLAS2 = "/deg" Then      '===如果要求是角度制，下同
                     Console.WriteLine(Sin((DegToRad(CLA(3)))).ToString)
@@ -190,6 +192,8 @@ Module ModMath
                         CurrErrCode = 2
                     End If
                 End If
+
+            '===双曲三角函数==='
             Case "/hsin"
                 If CLAS2 = "/deg" Then
                     Console.WriteLine(HSin(RadToDeg(CLA(3))).ToString)
@@ -248,6 +252,8 @@ Module ModMath
 
                 End If
                 CurrErrCode = 0
+
+            '===反三角函数==='
             Case "/arcsin"
                 If CLAS2 = "/deg" Then
                     If Not CheckDefinitionArea("arcsin", True, CLA(3)) Then Exit Select     '===检查定义域，防止报错，下同
@@ -277,6 +283,13 @@ Module ModMath
                     Console.WriteLine(Atan(CLA(2)).ToString)
                 End If
                 CurrErrCode = 0
+            Case "/arccot"
+                If CLAS2 = "/deg" Then
+                    Console.WriteLine(RadToDeg(ArcCot(CLA(3))).ToString)
+                Else
+                    Console.WriteLine((ArcCot(CLA(2))).ToString)
+                End If
+                CurrErrCode = 0
             Case "/arcsec"
                 If CLAS2 = "/deg" Then
                     If Not CheckDefinitionArea("arcsec", True, CLA(3)) Then Exit Select
@@ -288,13 +301,7 @@ Module ModMath
 
                 End If
                 CurrErrCode = 0
-            Case "/arccot"
-                If CLAS2 = "/deg" Then
-                    Console.WriteLine(RadToDeg(ArcCot(CLA(3))).ToString)
-                Else
-                    Console.WriteLine((ArcCot(CLA(2))).ToString)
-                End If
-                CurrErrCode = 0
+
             Case "/arccsc"
                 If CLAS2 = "/deg" Then
                     If Not CheckDefinitionArea("arccsc", True, CLA(3)) Then Exit Select
@@ -306,6 +313,72 @@ Module ModMath
 
                 End If
                 CurrErrCode = 0
+
+            '===反双曲三角函数
+            Case "/harcsin"
+                If CLAS2 = "/deg" Then
+                    Console.WriteLine(RadToDeg(HArcsin(CLA(3))).ToString)
+
+                Else
+                    Console.WriteLine(HArcsin(CLA(2)).ToString)
+
+                End If
+                CurrErrCode = 0
+            Case "/harccos"
+                If CLAS2 = "/deg" Then
+                    If Not CheckDefinitionArea("harccos", True, CLA(3)) Then Exit Select
+
+                    Console.WriteLine(RadToDeg(HArccos(CLA(3)).ToString))
+                Else
+                    If Not CheckDefinitionArea("harccos", False, CLA(2)) Then Exit Select
+
+                    Console.WriteLine(HArccos(CLA(2)).ToString)
+                End If
+                CurrErrCode = 0
+            Case "/harctan"
+                If CLAS2 = "/deg" Then
+                    If Not CheckDefinitionArea("harctan", True, CLA(3)) Then Exit Select
+                    Console.WriteLine(RadToDeg(HArctan(CLA(3))).ToString)
+
+                Else
+                    If Not CheckDefinitionArea("harctan", False, CLA(2)) Then Exit Select
+                    Console.WriteLine((HArctan(CLA(2))).ToString)
+
+                End If
+                CurrErrCode = 0
+            Case "/harccot"
+                If CLAS2 = "/deg" Then
+                    If Not CheckDefinitionArea("harccot", True, CLA(3)) Then Exit Select
+                    Console.WriteLine(RadToDeg(HArccot(CLA(3))).ToString)
+                Else
+                    If Not CheckDefinitionArea("harccot", False, CLA(2)) Then Exit Select
+                    Console.WriteLine((HArccot(CLA(2))).ToString)
+                End If
+                CurrErrCode = 0
+            Case "/harcsec"
+                If CLAS2 = "/deg" Then
+                    If Not CheckDefinitionArea("harcsec", True, CLA(3)) Then Exit Select
+                    Console.WriteLine(RadToDeg(ArcCsc(CLA(3))).ToString)
+
+                Else
+                    If Not CheckDefinitionArea("harcsec", False, CLA(2)) Then Exit Select
+                    Console.WriteLine((ArcCsc(CLA(2))).ToString)
+
+                End If
+                CurrErrCode = 0
+            Case "/harccsc"
+                If CLAS2 = "/deg" Then
+                    If Not CheckDefinitionArea("harccsc", True, CLA(3)) Then Exit Select
+                    Console.WriteLine(RadToDeg(ArcCsc(CLA(3))).ToString)
+
+                Else
+                    If Not CheckDefinitionArea("harccsc", False, CLA(2)) Then Exit Select
+                    Console.WriteLine((ArcCsc(CLA(2))).ToString)
+
+                End If
+                CurrErrCode = 0
+
+            '===其他函数==='
             Case "/lg"
                 If Not CheckDefinitionArea("log", True, CLA(2)) Then Exit Select
                 Console.WriteLine(Log10(CLA(2)).ToString)
@@ -324,6 +397,7 @@ Module ModMath
                 Console.WriteLine((Log(CLA(3), CLA(2))).ToString)
                 CurrErrCode = 0
 
+                '===输入错误==='
             Case Else
                 Output("错误:未找到对应命令，无法执行！", 0， AlertColor)
                 CurrErrCode = 3
@@ -334,7 +408,7 @@ Module ModMath
         Select Case Func
             Case "sqr"
                 If X < 0 Then
-                    Console.WriteLine("错误:非复数运算，根号内要大于0！")
+                    Output("错误:非复数运算，根号内要大于0！", 0, AlertColor)
                     CurrErrCode = 2
                     Return False
                 Else
@@ -343,7 +417,7 @@ Module ModMath
                 End If
             Case "log"
                 If X <= 0 Then
-                    Console.WriteLine("错误:Log类型函数的参数应该大于0！")
+                    Output("错误:Log类型函数的参数应该大于0！", 0, AlertColor)
                     CurrErrCode = 2
                     Return False
                 Else
@@ -354,7 +428,7 @@ Module ModMath
             Case "csc"
             Case "hcot"
                 If X = 0 Then
-                    Console.WriteLine("错误:HCot 函数定义域为{x|x≠0}！")
+                    Output("错误:HCot 函数定义域为{x|x≠0}！", 0, AlertColor)
                     CurrErrCode = 2
                     Return False
                 Else
@@ -363,7 +437,7 @@ Module ModMath
                 End If
             Case "hcsc"
                 If X = 0 Then
-                    Console.WriteLine("错误:HCsc 函数定义域为{x|x≠0}！")
+                    Output("错误:HCsc 函数定义域为{x|x≠0}！", 0, AlertColor)
                     CurrErrCode = 2
                     Return False
                 Else
@@ -372,7 +446,7 @@ Module ModMath
                 End If
             Case "arcsin"
                 If X > 1 Or X < -1 Then
-                    Console.WriteLine("错误:Arcsin 函数定义域为[-1，1]！")
+                    Output("错误:Arcsin 函数定义域为[-1，1]！", 0, AlertColor)
                     CurrErrCode = 2
                     Return False
                 Else
@@ -381,7 +455,7 @@ Module ModMath
                 End If
             Case "arccos"
                 If X > 1 Or X < -1 Then
-                    Console.WriteLine("错误:Arccos 函数定义域为[-1，1]！")
+                    Output("错误:Arccos 函数定义域为[-1，1]！", 0, AlertColor)
                     CurrErrCode = 2
                     Return False
                 Else
@@ -390,7 +464,7 @@ Module ModMath
                 End If
             Case "arcsec"
                 If X > -1 And X < 1 Then
-                    Console.WriteLine("错误:Arcsec 函数定义域为（-∞,-1]U[1,+∞)！")
+                    Output("错误:Arcsec 函数定义域为（-∞，-1]U[1，+∞）！", 0, AlertColor)
                     CurrErrCode = 2
                     Return False
                 Else
@@ -399,7 +473,52 @@ Module ModMath
                 End If
             Case "arccsc"
                 If X > -1 And X < 1 Then
-                    Console.WriteLine("错误:Arccsc 函数定义域为（-∞,-1]U[1,+∞)！")
+                    Output("错误:Arccsc 函数定义域为（-∞，-1]U[1，+∞）！", 0, AlertColor)
+                    CurrErrCode = 2
+                    Return False
+                Else
+                    CurrErrCode = 0
+                    Return True
+                End If
+            Case "harccos"
+                If X < 1 Then
+                    Output("错误:HArccos 函数定义域为 [1，+∞)！", 0, AlertColor)
+                    CurrErrCode = 2
+                    Return False
+                Else
+                    CurrErrCode = 0
+                    Return True
+                End If
+            Case "harctan"
+                If X >= 1 Or X <= -1 Then
+                    Output("错误:HArctan 函数定义域为（-1，1）！", 0, AlertColor)
+                    CurrErrCode = 2
+                    Return False
+                Else
+                    CurrErrCode = 0
+                    Return True
+                End If
+            Case "harccot"
+                If X <= 1 And X >= -1 Then
+                    Output("错误:HArccot 函数定义域为（-∞，-1）U（1，+∞）！", 0, AlertColor)
+                    CurrErrCode = 2
+                    Return False
+                Else
+                    CurrErrCode = 0
+                    Return True
+                End If
+            Case "harcsec"
+                If X > 1 Or X <= 0 Then
+                    Output("错误:HArcsec 函数定义域为（0，1]！", 0, AlertColor)
+                    CurrErrCode = 2
+                    Return False
+                Else
+                    CurrErrCode = 0
+                    Return True
+                End If
+            Case "harccsc"
+                If X = 0 Then
+                    Output("错误:HArccsc 函数定义域为{x|x≠0}！", 0, AlertColor)
                     CurrErrCode = 2
                     Return False
                 Else
@@ -427,7 +546,7 @@ Module ModMath
                 If CurrCLA = "/int" Then    '如果开关是要求取整
                     MathArg.isInt = True
                 Else
-                    Console.WriteLine("警告:未知开关:" + CurrCLA)
+                    Output("警告:未知开关:" + CurrCLA, 0, AlertColor)
                 End If
                 MathArg.ArgsCount += 1      '开关计数
             End If
