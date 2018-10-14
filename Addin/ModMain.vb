@@ -1,19 +1,25 @@
 ﻿Module ModMain
-    Public FinalBuildDate As String = "20171214"
-    Public FinalBuildVersion As Integer = 23
-    Public TodayBuildVersion As Integer = 2
+    '===编译信息==='
+    Public Const FinalBuildDate As String = "20181014"
+    Public Const FinalBuildVersion As Integer = 24
+    Public Const TodayBuildVersion As Integer = 1
+    '===变量定义==='
     Public CurrErrCode As Integer
-    Const TitleColor As ConsoleColor = ConsoleColor.Gray
-    Const InfoColor As ConsoleColor = ConsoleColor.White
-    Const InfoColor1 As ConsoleColor = ConsoleColor.Green
-    Const InfoColor2 As ConsoleColor = ConsoleColor.Yellow
-    Const InfoColor3 As ConsoleColor = ConsoleColor.Magenta
-    Const TableColor As ConsoleColor = ConsoleColor.Cyan
-    Const AlertColor As ConsoleColor = ConsoleColor.Red
+
+    '===常量定义==='
+    Public Const TitleColor As ConsoleColor = ConsoleColor.Gray
+    Public Const InfoColor As ConsoleColor = ConsoleColor.White
+    Public Const InfoColor1 As ConsoleColor = ConsoleColor.Green
+    Public Const InfoColor2 As ConsoleColor = ConsoleColor.Yellow
+    Public Const InfoColor3 As ConsoleColor = ConsoleColor.Magenta
+    Public Const TableColor As ConsoleColor = ConsoleColor.Cyan
+    Public Const AlertColor As ConsoleColor = ConsoleColor.Red
 
     Function Main() As Integer
+
         CurrErrCode = 0
 
+        '===使 Console 窗口能正确显示程序内容===
         If Console.WindowHeight < 30 Then
             Console.WindowHeight = 30
         End If
@@ -27,7 +33,7 @@
             Console.BufferWidth = 125
         End If
 
-        '===显示自带帮助===
+        '===若无参数，则显示自带帮助===
         If Command() = "" Or Command() = "/?" Then
 
             Output("=========================Addin 命令行程序=========================", 0, TitleColor)
@@ -55,11 +61,10 @@
             Return 0
             Exit Function
         End If
-        '===显示自带帮助===
 
 
         Dim Args0 As String = My.Application.CommandLineArgs(0).ToLower.Replace("-", "/")   '===自动替换'-'为'/'===
-        '===如果是要求显示帮助，就直接显示帮助===
+        '===如果参数要求显示帮助，就直接显示帮助===
         If Args0 = "/help" Or Args0 = "/h" Then
 
             Try
@@ -131,6 +136,7 @@
     ''' 获取指定返回码对应的解释，并作为String返回
     ''' </summary> 
     ''' <param name="ErrCodeNum">指定的返回码</param>   
+    ''' <returns>指定返回码对应的解释</returns>
     ''' <version> 
     ''' 1.0
     ''' </version> 
@@ -159,7 +165,7 @@
     ''' <summary>  
     ''' 获取指定模块对应的帮助，并输出到标准输出(Cout)上
     ''' </summary> 
-    ''' <param name="HelpContent ">需要提供帮助的模块</param>   
+    ''' <param name="HelpContent">需要提供帮助的模块</param>   
     ''' <version> 
     ''' 1.0
     ''' </version> 
@@ -196,7 +202,7 @@
                 Output("对数函数：  Addin /math [/lg|/ln|/log] [数字|底数 真数]", 0， InfoColor)
                 Output("", 0， InfoColor)
                 Output("注1:你可以使用 /deg 开关来指定使用角度模式(默认是弧度模式)， /int 开关来得到整数结果。", 1， InfoColor1)
-                Output("附加注意: /deg 用于三角函数时是指你输入的是弧度还是角度；而用于反三角函数时是指输出的是弧度还是角度。", 2， InfoColor2)
+                Output("附加注意: /deg 用于三角函数/双曲三角函数时是指你输入的是弧度还是角度；而用于反三角函数/反双曲三角函数时是指输出的是弧度还是角度。", 2， InfoColor2)
                 Output("", 0， InfoColor)
                 Output("注2:取随机数时，如启用 /int 开关取整，默认是没有意义的(随机数默认取0~1之间，取整后永远为0)，所以如果启用 /int 开关，随机数将自动乘100再进行取整。", 1， InfoColor1)
                 Output("", 0， InfoColor)
@@ -210,6 +216,12 @@
                 Output("Cot                        {θ|θ≠kπ，k∈Z}", 1， TableColor)
                 Output("Sec                   {θ|θ≠kπ+π/2，k∈Z}", 1， TableColor)
                 Output("Csc                        {θ|θ≠kπ，k∈Z}", 1， TableColor)
+                Output("HSin                                        R", 1， TableColor)
+                Output("HCos                                        R", 1， TableColor)
+                Output("HTan                                        R", 1， TableColor)
+                Output("HCot                                        R", 1， TableColor)
+                Output("HSec                                        R", 1， TableColor)
+                Output("HCsc                                        R", 1， TableColor)
                 Output("ArcSin                                 [-1,1]", 1， TableColor)
                 Output("ArcCos                                 [-1,1]", 1， TableColor)
                 Output("ArcTan                                      R", 1， TableColor)
@@ -249,18 +261,26 @@
                 CurrErrCode = 2
         End Select
     End Sub
-	
-	Public Sub Output(ByVal Data As String, ByVal Indenting As Integer, ByVal Color As System.ConsoleColor)
+    ''' <summary>  
+    ''' 输出指定内容到标准输出(Cout)上
+    ''' </summary> 
+    ''' <param name="Data">需要输出的数据</param>   
+    ''' <param name="Indenting">前面需补齐的空格数</param>   
+    ''' <param name="Color">输出的字体颜色</param>   
+    ''' <version> 
+    ''' 1.0
+    ''' </version> 
+    Public Sub Output(ByVal Data As String, ByVal Indenting As Integer, ByVal Color As System.ConsoleColor)
         Data = New String(" ", Indenting * 4) & Data
 
         Console.ForegroundColor = Color
         Console.WriteLine(Data)
         Console.ForegroundColor = ConsoleColor.White
 
-       ' Dim Writer As New IO.StreamWriter(System.Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\Wolfram Alpha wrapper log.log", True)
-       ' Writer.WriteLine(Data)
-       ' Writer.Close()
-       ' Writer.Dispose()
+        ' Dim Writer As New IO.StreamWriter(System.Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\Wolfram Alpha wrapper log.log", True)
+        ' Writer.WriteLine(Data)
+        ' Writer.Close()
+        ' Writer.Dispose()
 
     End Sub
 End Module

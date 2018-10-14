@@ -1,8 +1,8 @@
 ﻿Imports System.Math
 Module ModMath
-    Public Structure RndArgs
-        Public isInt As Boolean
-        Public ArgsCount As Integer
+    Public Structure RndArgs            '===参数列表信息
+        Public isInt As Boolean         '===是否包含取整开关
+        Public ArgsCount As Integer     '===开关个数
     End Structure
 
     ''' <summary>  
@@ -13,7 +13,7 @@ Module ModMath
     ''' 1.0
     ''' </version> 
     Public Sub MathBas(CLA As ObjectModel.ReadOnlyCollection(Of String))
-        '命令行标识
+        '===命令行标识===
         '0为模块命令
         '1为模块命令子命令
         '2为模块命令参数1
@@ -23,26 +23,26 @@ Module ModMath
         '        0     1      2     3      4
         'Addin /Math /CLAS1 /CLAS2 CLA(3) CLA(4)...
 
-        Dim CLAS1 As String = CLA(1).ToLower.Replace("-", "/")
+        Dim CLAS1 As String = CLA(1).ToLower.Replace("-", "/") '===处理开关
         Dim CLAS2 As String
         If CLA.Count > 2 Then
             CLAS2 = CLA(2).ToLower '.Replace("-", "/")
         End If
-        Select Case CLAS1
-            Case "/rnd"
+        Select Case CLAS1   '===第一个参数：模块命令
+            Case "/rnd"     '===随机数函数
                 '(CLA(3) - CLA(2) + 1) * Rnd(CLA(4)) + CLA(2).ToString
 
-                Dim CurrArgs As RndArgs = ParseRNDCLA(CLA) '===获取输入的参数==='
+                Dim CurrArgs As RndArgs = ParseRNDCLA(CLA) '===获取输入的参数
                 Dim ArgStartPos As Integer = 0
                 ArgStartPos = 2 + CurrArgs.ArgsCount
 
-                If ArgStartPos = CLA.Count Then '无参数
+                If ArgStartPos = CLA.Count Then         '===无参数，即直接取随机数
                     Randomize()
-                    Console.WriteLine(IIf(CurrArgs.isInt, Round(Rnd() * 100), Rnd()).ToString)
-                ElseIf ArgStartPos = CLA.Count - 1 Then '一个参数
+                    Console.WriteLine(IIf(CurrArgs.isInt, Round(Rnd() * 100), Rnd()).ToString) '===如果包含取整开关，则结果乘100再取整，下同
+                ElseIf ArgStartPos = CLA.Count - 1 Then '===一个参数，即包含种子的取随机数
                     Randomize()
                     Console.WriteLine(IIf(CurrArgs.isInt, Round(Rnd(CLA(ArgStartPos)) * 100), Rnd(CLA(ArgStartPos))).ToString)
-                ElseIf ArgStartPos = CLA.Count - 2 Then '两个参数
+                ElseIf ArgStartPos = CLA.Count - 2 Then '===两个参数，即有上下限的取随机数
                     If CLA(CLA.Count - 1) <> "" And CLA(CLA.Count - 2) <> "" Then
                         If Val(CLA(CLA.Count - 1)) < Val(CLA(CLA.Count - 2)) Then
                             Console.WriteLine("错误:上限小于下限！")
@@ -58,7 +58,7 @@ Module ModMath
                         End If
                         CurrErrCode = 0
                     End If
-                ElseIf ArgStartPos = CLA.Count - 3 Then '三个参数
+                ElseIf ArgStartPos = CLA.Count - 3 Then '===三个参数，即包含上下限和种子的取随机数
                     If Val(CLA(CLA.Count - 2)) < Val(CLA(CLA.Count - 3)) Then
                         Console.WriteLine("错误:上限小于下限！")
                         CurrErrCode = 2
@@ -80,8 +80,8 @@ Module ModMath
                 End If
 
 
-            Case "/sqr"
-                Dim CurrArgs As RndArgs = ParseRNDCLA(CLA) '===获取输入的参数==='
+            Case "/sqr"     '===平方根函数
+                Dim CurrArgs As RndArgs = ParseRNDCLA(CLA) '===获取输入的参数'
                 Dim ArgStartPos As Integer = 0
                 ArgStartPos = 2 + CurrArgs.ArgsCount
 
@@ -99,7 +99,7 @@ Module ModMath
 
                 End If
             Case "/sin"
-                If CLAS2 = "/deg" Then
+                If CLAS2 = "/deg" Then      '===如果要求是角度制，下同
                     Console.WriteLine(Sin((DegToRad(CLA(3)))).ToString)
                 Else
                     Console.WriteLine(Sin(CLA(2)).ToString)
@@ -190,9 +190,67 @@ Module ModMath
                         CurrErrCode = 2
                     End If
                 End If
+            Case "/hsin"
+                If CLAS2 = "/deg" Then
+                    Console.WriteLine(HSin(RadToDeg(CLA(3))).ToString)
+
+                Else
+                    Console.WriteLine(HSin(CLA(2)).ToString)
+
+                End If
+                CurrErrCode = 0
+            Case "/hcos"
+                If CLAS2 = "/deg" Then
+                    Console.WriteLine(HCos(RadToDeg(CLA(3))).ToString)
+
+                Else
+                    Console.WriteLine(HCos(CLA(2)).ToString)
+
+                End If
+                CurrErrCode = 0
+            Case "/htan"
+                If CLAS2 = "/deg" Then
+                    Console.WriteLine(HTan(RadToDeg(CLA(3))).ToString)
+
+                Else
+                    Console.WriteLine(HTan(CLA(2)).ToString)
+
+                End If
+                CurrErrCode = 0
+            Case "/hcot"
+                If CLAS2 = "/deg" Then
+                    If Not CheckDefinitionArea("hcot", True, CLA(3)) Then Exit Select
+                    Console.WriteLine(HCot(RadToDeg(CLA(3))).ToString)
+
+                Else
+                    If Not CheckDefinitionArea("hcot", False, CLA(2)) Then Exit Select
+                    Console.WriteLine(HCot(CLA(2)).ToString)
+
+                End If
+                CurrErrCode = 0
+            Case "/hsec"
+                If CLAS2 = "/deg" Then
+                    Console.WriteLine(HSec(RadToDeg(CLA(3))).ToString)
+
+                Else
+                    Console.WriteLine(HSec(CLA(2)).ToString)
+
+                End If
+                CurrErrCode = 0
+            Case "/hcsc"
+                If CLAS2 = "/deg" Then
+                    If Not CheckDefinitionArea("hcsc", True, CLA(3)) Then Exit Select
+                    Console.WriteLine(HCsc(RadToDeg(CLA(3))).ToString)
+
+                Else
+                    If Not CheckDefinitionArea("hcsc", False, CLA(2)) Then Exit Select
+                    Console.WriteLine(HCsc(CLA(2)).ToString)
+
+                End If
+                CurrErrCode = 0
             Case "/arcsin"
                 If CLAS2 = "/deg" Then
-                    If Not CheckDefinitionArea("arcsin", True, CLA(3)) Then Exit Select
+                    If Not CheckDefinitionArea("arcsin", True, CLA(3)) Then Exit Select     '===检查定义域，防止报错，下同
                     Console.WriteLine(RadToDeg(Asin(CLA(3))).ToString)
 
                 Else
@@ -251,25 +309,28 @@ Module ModMath
             Case "/lg"
                 If Not CheckDefinitionArea("log", True, CLA(2)) Then Exit Select
                 Console.WriteLine(Log10(CLA(2)).ToString)
-                    CurrErrCode = 0
+                CurrErrCode = 0
 
             Case "/ln"
                 If Not CheckDefinitionArea("log", True, CLA(2)) Then Exit Select
 
                 Console.WriteLine(Log(CLA(2)).ToString)
-                    CurrErrCode = 0
+                CurrErrCode = 0
 
             Case "/log"
                 If Not CheckDefinitionArea("log", True, CLA(2)) Then Exit Select
                 If Not CheckDefinitionArea("log", True, CLA(3)) Then Exit Select
 
                 Console.WriteLine((Log(CLA(3), CLA(2))).ToString)
-                    CurrErrCode = 0
+                CurrErrCode = 0
 
+            Case Else
+                Output("错误:未找到对应命令，无法执行！", 0， AlertColor)
+                CurrErrCode = 3
         End Select
     End Sub
 
-    Private Function CheckDefinitionArea(Func As String, isDeg As Boolean, X As Double) As Boolean
+    Private Function CheckDefinitionArea(Func As String, isDeg As Boolean, X As Double) As Boolean      '===检查函数定义域
         Select Case Func
             Case "sqr"
                 If X < 0 Then
@@ -291,6 +352,24 @@ Module ModMath
                 End If
             Case "sec"
             Case "csc"
+            Case "hcot"
+                If X = 0 Then
+                    Console.WriteLine("错误:HCot 函数定义域为{x|x≠0}！")
+                    CurrErrCode = 2
+                    Return False
+                Else
+                    CurrErrCode = 0
+                    Return True
+                End If
+            Case "hcsc"
+                If X = 0 Then
+                    Console.WriteLine("错误:HCsc 函数定义域为{x|x≠0}！")
+                    CurrErrCode = 2
+                    Return False
+                Else
+                    CurrErrCode = 0
+                    Return True
+                End If
             Case "arcsin"
                 If X > 1 Or X < -1 Then
                     Console.WriteLine("错误:Arcsin 函数定义域为[-1，1]！")
@@ -338,19 +417,19 @@ Module ModMath
     End Function
 
     Public Function ParseRNDCLA(CLA As ObjectModel.ReadOnlyCollection(Of String)) As RndArgs
-        Dim MathArg As RndArgs
+        Dim MathArg As RndArgs              '===处理参数的函数==='
         MathArg.ArgsCount = 0
         MathArg.isInt = False
 
-        For N = 2 To CLA.Count - 1
-            Dim CurrCLA As String = CLA(N).ToLower '.Replace("-", "/")
-            If Left(CurrCLA, 1) = "/" Then
-                If CurrCLA = "/int" Then
+        For N = 2 To CLA.Count - 1          ';遍历所有参数
+            Dim CurrCLA As String = CLA(N).ToLower '.Replace("-", "/")'处理大小写问题，全转换为小写
+            If Left(CurrCLA, 1) = "/" Then  '如果是开关
+                If CurrCLA = "/int" Then    '如果开关是要求取整
                     MathArg.isInt = True
                 Else
                     Console.WriteLine("警告:未知开关:" + CurrCLA)
                 End If
-                MathArg.ArgsCount += 1
+                MathArg.ArgsCount += 1      '开关计数
             End If
         Next
         Return MathArg
@@ -359,49 +438,49 @@ Module ModMath
 
 
     '===其他辅助三角函数===
-    Function ArcSec(X As Double) As Double '反正割
+    Function ArcSec(X As Double) As Double  '===反正割
         ArcSec = Acos(1 / X)
     End Function
-    Function ArcCsc(X As Double) As Double '反余割
+    Function ArcCsc(X As Double) As Double  '===反余割
         ArcCsc = Asin(1 / X)
     End Function
-    Function ArcCot(X As Double) As Double '反余切
+    Function ArcCot(X As Double) As Double  '===反余切
         ArcCot = Atan(1 / X)
     End Function
-    Function HSin(X As Double) As Double '双曲正弦
+    Function HSin(X As Double) As Double    '===双曲正弦
         HSin = (Exp(X) - Exp(-X)) / 2
     End Function
-    Function HCos(X As Double) As Double '双曲余弦
+    Function HCos(X As Double) As Double    '===双曲余弦
         HCos = (Exp(X) + Exp(-X)) / 2
     End Function
-    Function HTan(X As Double) As Double '双曲正切
+    Function HTan(X As Double) As Double    '===双曲正切
         HTan = (Exp(X) - Exp(-X)) / (Exp(X) + Exp(-X))
     End Function
-    Function HSec(X As Double) As Double '双曲正割
+    Function HSec(X As Double) As Double    '===双曲正割
         HSec = 2 / (Exp(X) + Exp(-X))
     End Function
-    Function HCsc(X As Double) As Double '双曲余割 
+    Function HCsc(X As Double) As Double    '===双曲余割 
         HCsc = 2 / (Exp(X) - Exp(-X))
     End Function
-    Function HCot(X As Double) As Double '双曲余切
+    Function HCot(X As Double) As Double    '===双曲余切
         HCot = (Exp(X) + Exp(-X)) / (Exp(X) - Exp(-X))
     End Function
-    Function HArcsin(X As Double) As Double '反双曲正弦
+    Function HArcsin(X As Double) As Double '===反双曲正弦
         HArcsin = Log(X + Sqrt(X * X + 1))
     End Function
     Function HArccos(X As Double) As Double '反双曲余弦
         HArccos = Log(X + Sqrt(X * X - 1))
     End Function
-    Function HArctan(X As Double) As Double '反双曲正切
+    Function HArctan(X As Double) As Double '===反双曲正切
         HArctan = Log((1 + X) / (1 - X)) / 2
     End Function
-    Function HArcsec(X As Double) As Double '反双曲正割
+    Function HArcsec(X As Double) As Double '===反双曲正割
         HArcsec = Log((Sqrt(-X * X + 1) + 1) / X)
     End Function
-    Function HArccsc(X As Double) As Double '反双曲余割
+    Function HArccsc(X As Double) As Double '===反双曲余割
         HArccsc = Log((Sign(X) * Sqrt(X * X + 1) + 1) / X)
     End Function
-    Function HArccot(X As Double) As Double '反双曲余切
+    Function HArccot(X As Double) As Double '===反双曲余切
         HArccot = Log((X + 1) / (X - 1)) / 2
     End Function
 End Module
