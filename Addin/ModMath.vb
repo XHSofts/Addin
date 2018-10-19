@@ -8,7 +8,7 @@ Module ModMath
     ''' <summary>  
     ''' 数学基础模块函数
     ''' </summary> 
-    ''' <param name="CLA">输入的命令行参数</param>   
+    ''' <param name="CLA">输入的命令行参数集合</param>   
     ''' <version> 
     ''' 1.0
     ''' </version> 
@@ -397,13 +397,27 @@ Module ModMath
                 Console.WriteLine((Log(CLA(3), CLA(2))).ToString)
                 CurrErrCode = 0
 
+            Case "/getpi"
+                'If Not CheckDefinitionArea("getpi", True, CLA(2)) Then Exit Select
+                'Dim N As Double = 10 ^ CLA(2)
+
+                Console.WriteLine(16 * Atan(1 / 5) - 4 * Atan(1 / 239))
                 '===输入错误==='
             Case Else
                 Output("错误:未找到对应命令，无法执行！", 0， AlertColor)
                 CurrErrCode = 3
         End Select
     End Sub
-
+    ''' <summary>  
+    ''' 确定输入的值是否符合给定函数的定义域
+    ''' </summary> 
+    ''' <param name="Func">函数名</param>   
+    ''' <param name="isDeg">是否采用角度制</param>   
+    ''' <param name="X">要检查的输入的值</param>  
+    ''' <returns>是否符合定义域</returns>
+    ''' <version> 
+    ''' 1.0
+    ''' </version> 
     Private Function CheckDefinitionArea(Func As String, isDeg As Boolean, X As Double) As Boolean      '===检查函数定义域
         Select Case Func
             Case "sqr"
@@ -525,6 +539,15 @@ Module ModMath
                     CurrErrCode = 0
                     Return True
                 End If
+            Case "getpi"
+                If X <= 0 Then
+                    Output("错误:所求位数不合理！", 0, AlertColor)
+                    CurrErrCode = 2
+                    Return False
+                Else
+                    CurrErrCode = 0
+                    Return True
+                End If
         End Select
     End Function
     '===辅助函数==='
@@ -534,7 +557,14 @@ Module ModMath
     Public Function RadToDeg(RadNum As Double） As Double
         RadToDeg = RadNum * (180 / PI)
     End Function
-
+    ''' <summary>  
+    ''' 处理输入的命令行参数
+    ''' </summary> 
+    ''' <param name="CLA">输入的命令行参数集合</param>   
+    ''' <returns>命令行信息</returns>
+    ''' <version> 
+    ''' 1.0
+    ''' </version> 
     Public Function ParseRNDCLA(CLA As ObjectModel.ReadOnlyCollection(Of String)) As RndArgs
         Dim MathArg As RndArgs              '===处理参数的函数==='
         MathArg.ArgsCount = 0
